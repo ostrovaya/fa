@@ -12,7 +12,6 @@ local TableInsert = table.insert
 local TableGetn = table.getn
 
 local CreateUnit = CreateUnit
-
 local Timer = GetSystemTimeSecondsOnlyForProfileUse
 
 ModuleName = "Formations"
@@ -21,22 +20,24 @@ BenchmarkData = {
 }
 
 local UnitsSelector = {
-    [0] = "uaa0303", -- asf
-    [1] = "xal0203", -- blaze
-    [2] = "url0105", -- engineer
-    [3] = "ura0401", -- soul ripper
-    [4] = "uea0304", -- strat bomber
-    [5] = "url0402", -- monkeylord
-    [6] = "xsl0301", -- sacu
-    -- excludes sea + sub units explicitly
+    "ura0401", -- soul ripper
+    "uaa0303", -- asf
+    "xal0203", -- blaze
+    "url0105", -- engineer
+    "uea0304", -- strat bomber
+    "url0402", -- monkeylord
+    "xsl0301", -- sacu
+    "ues0302", -- summit
+    "xss0203", -- t1 sub
 }
 local UnitsSelectorLength = TableGetn(UnitsSelector)
 local UnitCount = 63
 
 function CategorizeUnitsTest(loop)
     local units = {}
+    
     for i = 1, UnitCount do
-        TableInsert(units, CreateUnit(UnitsSelector[MathMod(i, UnitsSelectorLength)], 1, 0, 0, 0, 0, 0, 0, 0))
+        TableInsert(units, CreateUnit(UnitsSelector[MathMod(i, UnitsSelectorLength) + 1], 1, 0, 0, 0, 0, 0, 0, 0))
     end
 
     local start = Timer()
