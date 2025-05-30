@@ -5,6 +5,7 @@
 -- this benchmark depends on the file-function structure of lua/formations.lua and could break!
 
 local CategorizeUnits = import("/lua/formations.lua").CategorizeUnits
+local GetColSpot = import("/lua/formations.lua").GetColSpot
 
 local MathMod = math.mod
 
@@ -17,6 +18,7 @@ local Timer = GetSystemTimeSecondsOnlyForProfileUse
 ModuleName = "Formations"
 BenchmarkData = {
     CategorizeUnitsTest = "CategorizeUnits",
+    GetColSpotTest = "GetColSpot"
 }
 
 local UnitsSelector = {
@@ -32,6 +34,27 @@ local UnitsSelector = {
 }
 local UnitsSelectorLength = TableGetn(UnitsSelector)
 local UnitCount = 63
+
+-- GetColSpot has some pattern to its inputs
+--   but that information is hidden under another layer of profiling
+function GetColSpotTest(loop)
+    local random = Random
+    local nums = {}
+
+    for k = 1, 1000 do
+        TableInsert(nums, random(1,128))
+    end
+
+    local start = Timer()
+
+    for k = 1, loop do
+        GetColSpot(nums[MathMod(k, 128) + 1], nums[128 - MathMod(k, 128) + 1])
+    end
+
+    local finish = Timer()
+
+    return finish - start
+end
 
 function CategorizeUnitsTest(loop)
     local units = {}
