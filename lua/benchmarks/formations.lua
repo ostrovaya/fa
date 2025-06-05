@@ -4,7 +4,7 @@
 
 -- this benchmark depends on the file-function structure of lua/formations.lua and could break!
 
-local CategorizeUnits = import("/lua/formations.lua").CategorizeUnits
+local CategorizeUnits = import("/lua/formationscategories.lua").CategorizeUnits
 local GetColSpot = import("/lua/formations.lua").GetColSpot
 
 local MathMod = math.mod
