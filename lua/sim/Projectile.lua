@@ -33,6 +33,7 @@ local ProjectileMethodsCreateChildProjectile = ProjectileMethods.CreateChildProj
 local ProjectileMethodsGetMaxZigZag = ProjectileMethods.GetMaxZigZag
 local ProjectileMethodsGetZigZagFrequency = ProjectileMethods.GetZigZagFrequency
 local ProjectileMethodsSetBallisticAcceleration = ProjectileMethods.SetBallisticAcceleration
+local ProjectileGetCurrentTargetPosition = ProjectileMethods.GetCurrentTargetPosition
 
 local EntityMethods = _G.moho.entity_methods
 local EntityGetBlueprint = EntityMethods.GetBlueprint
@@ -315,7 +316,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
         -- callbacks for launcher to have an idea what is going on for AIs
         local launcher = self.Launcher
         if not IsDestroyed(launcher) then
-            launcher:OnMissileIntercepted(self:GetCurrentTargetPosition(), instigator, EntityGetPosition(self), self)
+            launcher:OnMissileIntercepted(ProjectileGetCurrentTargetPosition(self), instigator, EntityGetPosition(self), self)
 
             -- keep track of the number of intercepted missiles
             if not IsDestroyed(instigator) and instigator.GetStat then
@@ -357,13 +358,13 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
             -- we have a target, but got caught by terrain
             if targetType == 'Terrain' then
                 if not IsDestroyed(launcher) then
-                    launcher:OnMissileImpactTerrain(self:GetCurrentTargetPosition(), position)
+                    launcher:OnMissileImpactTerrain(ProjectileGetCurrentTargetPosition(self), position)
                 end
 
                 -- we have a target, but got caught by an (unexpected) shield
             elseif targetType == 'Shield' then
                 if not IsDestroyed(launcher) then
-                    launcher:OnMissileImpactShield(self:GetCurrentTargetPosition(), targetEntity.Owner, position)
+                    launcher:OnMissileImpactShield(ProjectileGetCurrentTargetPosition(self), targetEntity.Owner, position)
                 end
             end
         end
