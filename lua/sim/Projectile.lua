@@ -42,6 +42,7 @@ local EntitySetHealth = EntityMethods.SetHealth
 local EntityGetPositionXYZ = EntityMethods.GetPositionXYZ
 local EntityDestroy = EntityMethods.Destroy
 local EntityGetOrientation = EntityMethods.GetOrientation
+local EntityPlaySound = EntityMethods.PlaySound
 
 local TrashBag = TrashBag
 local TrashBagAdd = TrashBag.Add
@@ -458,9 +459,9 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
         -- Sounds for all other impacts, ie: Impact<TargetTypeName>
         local snd = blueprintAudio['Impact' .. targetType]
         if snd then
-            self:PlaySound(snd)
+            EntityPlaySound(self, snd)
         elseif blueprintAudio.Impact then
-            self:PlaySound(blueprintAudio.Impact)
+            EntityPlaySound(self, blueprintAudio.Impact)
         end
 
         -- Possible 'target' values are:
@@ -543,7 +544,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
             end
 
             if blueprintAudio then
-                self:PlaySound(blueprintAudio)
+                EntityPlaySound(self, blueprintAudio)
             end
         end
     end,
@@ -561,7 +562,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
             end
 
             if blueprintAudio then
-                self:PlaySound(blueprintAudio)
+                EntityPlaySound(self, blueprintAudio)
             end
         end
     end,
