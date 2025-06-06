@@ -43,6 +43,7 @@ local EntityGetPositionXYZ = EntityMethods.GetPositionXYZ
 local EntityDestroy = EntityMethods.Destroy
 local EntityGetOrientation = EntityMethods.GetOrientation
 local EntityPlaySound = EntityMethods.PlaySound
+local EntityGetHealth = EntityMethods.GetHealth
 
 local TrashBag = TrashBag
 local TrashBagAdd = TrashBag.Add
@@ -918,7 +919,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
         end
 
         self:AdjustHealth(instigator, -amount)
-        local health = self:GetHealth()
+        local health = EntityGetHealth(self)
         if health <= 0 then
             if damageType == 'Reclaimed' then
                 self:Destroy()
