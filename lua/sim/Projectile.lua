@@ -46,6 +46,9 @@ local EntityPlaySound = EntityMethods.PlaySound
 local EntityGetHealth = EntityMethods.GetHealth
 local EntityGetPosition = EntityMethods.GetPosition
 
+local WeaponMethods = _G.moho.weapon_methods
+local WeaponGetCurrentTarget = WeaponMethods.GetCurrentTarget
+
 local TrashBag = TrashBag
 local TrashBagAdd = TrashBag.Add
 local TrashBagDestroy = TrashBag.Destroy
@@ -267,7 +270,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
         -- check for projectile types that require a defensive weapon to intercept
         if selfHashedCategories['TACTICAL'] or selfHashedCategories['STRATEGIC'] or selfHashedCategories['TORPEDO'] then
             if firingWeapon.Blueprint.WeaponCategory == 'Defense' then
-                return firingWeapon:GetCurrentTarget() == self
+                return WeaponGetCurrentTarget(firingWeapon) == self
             else
                 return false
             end
@@ -597,7 +600,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
                 return
             end
 
-            local target = createdByWeapon:GetCurrentTarget()
+            local target = WeaponGetCurrentTarget(createdByWeapon)
             if target then
                 self:SetNewTarget(target)
                 self:TrackTarget(true)
