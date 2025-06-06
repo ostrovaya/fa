@@ -34,6 +34,7 @@ local ProjectileMethodsGetMaxZigZag = ProjectileMethods.GetMaxZigZag
 local ProjectileMethodsGetZigZagFrequency = ProjectileMethods.GetZigZagFrequency
 local ProjectileMethodsSetBallisticAcceleration = ProjectileMethods.SetBallisticAcceleration
 local ProjectileGetCurrentTargetPosition = ProjectileMethods.GetCurrentTargetPosition
+local ProjectileGetCurrentTargetPositionXYZ = ProjectileMethods.GetCurrentTargetPositionXYZ
 
 local EntityMethods = _G.moho.entity_methods
 local EntityGetBlueprint = EntityMethods.GetBlueprint
@@ -203,7 +204,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
             
             self:SetNewTargetGroundXYZ(px + dx, py + dy, pz + dz)
         else
-            local px, _, pz = self:GetCurrentTargetPositionXYZ()
+            local px, _, pz = ProjectileGetCurrentTargetPositionXYZ(self)
 
             local physics = self.Blueprint.Physics
             local fuzziness = physics.TrackTargetGroundFuzziness or 0
