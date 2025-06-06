@@ -44,6 +44,7 @@ local EntityDestroy = EntityMethods.Destroy
 local EntityGetOrientation = EntityMethods.GetOrientation
 local EntityPlaySound = EntityMethods.PlaySound
 local EntityGetHealth = EntityMethods.GetHealth
+local EntityGetPosition = EntityMethods.GetPosition
 
 local TrashBag = TrashBag
 local TrashBagAdd = TrashBag.Add
@@ -311,7 +312,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
         -- callbacks for launcher to have an idea what is going on for AIs
         local launcher = self.Launcher
         if not IsDestroyed(launcher) then
-            launcher:OnMissileIntercepted(self:GetCurrentTargetPosition(), instigator, self:GetPosition(), self)
+            launcher:OnMissileIntercepted(self:GetCurrentTargetPosition(), instigator, EntityGetPosition(self), self)
 
             -- keep track of the number of intercepted missiles
             if not IsDestroyed(instigator) and instigator.GetStat then
@@ -336,7 +337,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
         end
 
         -- localize information for performance
-        local position = self:GetPosition()
+        local position = EntityGetPosition(self)
         local damageData = self.DamageData
         local radius = damageData.DamageRadius or 0
 
@@ -632,7 +633,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
     DoDamage = function(self, instigator, DamageData, targetEntity, cachedPosition)
 
         -- this may be a cached vector, we can not send this to threads or use after waiting statements!
-        cachedPosition = cachedPosition or self:GetPosition()
+        cachedPosition = cachedPosition or EntityGetPosition(self)
 
         local damage = DamageData.DamageAmount
         if damage > 0 then
@@ -678,7 +679,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
                         ForkThread(
                             AreaDoTThread,
                             instigator,
-                            self:GetPosition(), -- can't use cachedPosition here: breaks invariant
+                            EntityGetPosition(self), -- can't use cachedPosition here: breaks invariant
                             DoTPulses,
                             (DoTTime / (DoTPulses)),
                             radius,
@@ -739,7 +740,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
             local damageType = DamageData.DamageType or 'Nuke'
             self.InnerRing:DoNukeDamage(
                 self.Launcher,
-                self:GetPosition(), -- can't use cachedPosition here: breaks invariant
+                EntityGetPosition(self), -- can't use cachedPosition here: breaks invariant
                 self.Brain,
                 self.Army,
                 damageType
@@ -747,7 +748,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
 
             self.OuterRing:DoNukeDamage(
                 self.Launcher,
-                self:GetPosition(), -- can't use cachedPosition here: breaks invariant
+                EntityGetPosition(self), -- can't use cachedPosition here: breaks invariant
                 self.Brain,
                 self.Army,
                 damageType
@@ -775,7 +776,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
                         if v.Radius and v.Radius > 0 then
                             -- This is a radius buff
                             -- get the position of the projectile
-                            target:AddBuff(v, self:GetPosition())
+                            target:AddBuff(v, EntityGetPosition(self))
                         else
                             -- This is a single target buff
                             target:AddBuff(v)
@@ -890,7 +891,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
     ---@return string[] | boolean
     GetTerrainEffects = function(self, targetType, impactEffectType, position)
 
-        local position = position or self:GetPosition()
+        local position = position or EntityGetPosition(self)
 
         local terrainType = nil
         if impactEffectType then
@@ -1002,7 +1003,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
     ---@param self Projectile
     ---@return Vector
     GetCachePosition = function(self)
-        return self:GetPosition()
+        return EntityGetPosition(self)
     end,
 
     ---@deprecated
