@@ -175,7 +175,7 @@ Projectile = ClassProjectile(ProjectileMethods, DebugProjectileComponent) {
             -- X-offset units often have displaced center bones, so they're not accounted for.
             local cy, cz = unitBlueprint.CollisionOffsetY or 0, unitBlueprint.CollisionOffsetZ or 0
             local sx, sy, sz = unitBlueprint.SizeX or 1, unitBlueprint.SizeY or 1, unitBlueprint.SizeZ or 1
-            local px, py, pz = target:GetPositionXYZ()
+            local px, py, pz = EntityGetPositionXYZ(target)
 
             -- don't target the part of the hitbox below the surface
             if cy < 0 then
