@@ -21,6 +21,7 @@
 --******************************************************************************************************
 
 local XZDistanceTwoVectors = import("/lua/utilities.lua").XZDistanceTwoVectors
+local DotP = import("/lua/utilities.lua").DotP
 
 -- upvalue globals for performance
 local VDist3 = VDist3
@@ -114,15 +115,11 @@ SemiBallisticComponent = ClassSimple {
     TurnRateFromDistance = function(self)
         local blueprintPhysics = self.Blueprint.Physics
 
-        local targetX, targetY, targetZ = self:GetCurrentTargetPositionXYZ()
-        local selfX, selfY, selfZ = self:GetPositionXYZ()
-        local velX, velY, velZ = self:GetVelocity()
-
-        local dot = (targetX - selfX) * velX + (targetY - selfY) * velY + (targetZ - selfZ) * velZ
-
         local dist = self:DistanceToTarget()
+        local targetVector = VDiff(self:GetCurrentTargetPosition(), self:GetPosition())
+        local ux, uy, uz = self:GetVelocity()
         local speed = self:GetCurrentSpeed()
-        local theta = MathAcos(dot / (speed * dist))
+        local theta = MathAcos(DotP(targetVector, Vector(ux, uy, uz)) / (speed * dist))
         --local radius = dist/(2 * MathSin(theta))
         local arcLength = 2 * theta * dist/(2 * MathSin(theta))
 
