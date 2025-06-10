@@ -20,6 +20,8 @@
 --** SOFTWARE.
 --******************************************************************************************************
 
+local XZDistanceTwoVectors = import("/lua/utilities.lua").XZDistanceTwoVectors
+
 -- upvalue globals for performance
 local VDist3 = VDist3
 local MathPow = math.pow
@@ -74,9 +76,7 @@ SemiBallisticComponent = ClassSimple {
         local ux, uy, uz = self:GetVelocity()
         local s0 = self:GetPosition()
         local target = self:GetCurrentTargetPosition()
-        local d1 = s0[1] - target[1]
-        local d2 =  s0[3] - target[3]
-        local dist = MathSqrt(d1 * d1 + d2 * d2)
+        local dist = XZDistanceTwoVectors(s0, target)
 
         -- we need velocity in m/s, not in m/tick
         ux, uy, uz = ux*10, uy*10, uz*10
