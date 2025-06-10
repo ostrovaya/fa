@@ -278,6 +278,7 @@ function NormalizeVector(v)
     end
 end
 
+---@diagnostic disable-next-line: deprecated
 GetDifferenceVector = VDiff
 
 --- Gets the direction vector from `v1` to `v2`

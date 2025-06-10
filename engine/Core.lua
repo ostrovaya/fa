@@ -462,7 +462,6 @@ function VAdd(a, b)
 end
 
 --- Subtracts vector `b` from vector `a`
----@deprecated It is faster to compute it in Lua with `Vector`
 ---@param a Vector
 ---@param b Vector
 ---@return Vector

@@ -280,13 +280,11 @@ BuffEffects = {
 
         if healthadj < 0 then
             -- fixme: DoTakeDamage shouldn't be called directly
-            local instigatorPos = instigator:GetPosition()
-            local unitPos = unit:GetPosition()
             local data = {
                 Instigator = instigator,
                 Amount = -1 * healthadj,
                 Type = buffDefinition.DamageType or 'Spell',
-                Vector = Vector(instigatorPos[1] - unitPos[1], instigatorPos[2] - unitPos[2], instigatorPos[3] - unitPos[3]),
+                Vector = VDiff(instigator:GetPosition(), unit:GetPosition())
             }
             unit:DoTakeDamage(data)
         else
