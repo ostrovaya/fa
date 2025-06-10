@@ -23,6 +23,7 @@ local EffectUtils = import('/lua/effectutilities.lua')
 local CreateCybranBuildBeamsOpti = EffectUtils.CreateCybranBuildBeamsOpti
 local CreateCybranEngineerBuildEffectsOpti = EffectUtils.CreateCybranEngineerBuildEffectsOpti
 local SpawnBuildBotsOpti = EffectUtils.SpawnBuildBotsOpti
+local GetDistanceBetweenTwoVectorsSquared = import("/lua/utilities.lua").GetDistanceBetweenTwoVectorsSquared
 
 local TrashBag = _G.TrashBag
 local TrashBagAdd = TrashBag.Add
@@ -216,18 +217,13 @@ CConstructionTemplate = ClassSimple {
             for l = 1, 4 do
                 WaitTicks(3)
 
-                local tx, _, tz = EntityGetPositionXYZ(self)
+                local position = EntityGetPosition(self)
                 for k = 1, buildBotTotal do
                     local bot = bots[k]
                     if bot and not bot.Dead then
-                        local bx, _, bz = EntityGetPositionXYZ(bot)
-                        local distX = bx - tx
-                        local distZ = bz - tz
-                        local distance = distX * distX + distZ * distZ
-
                         -- if close enough, just remove it
                         threshold = threshold + 0.1
-                        if distance < threshold then
+                        if GetDistanceBetweenTwoVectorsSquared(position, EntityGetPositionXYZ(bot)) < threshold then
                             -- destroy bot without effects
                             EntityDestroy(bot)
 
