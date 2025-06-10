@@ -18,6 +18,8 @@ local BaseTransportOnStartTransportLoading = BaseTransport.OnStartTransportLoadi
 local BaseTransportOnStopTransportLoading = BaseTransport.OnStopTransportLoading
 local BaseTransportDestroyedOnTransport = BaseTransport.DestroyedOnTransport
 
+local XZDistanceTwoVectors = import("/lua/utilities.lua").XZDistanceTwoVectors
+
 local MathSqrt = math.sqrt
 
 local UnloadCommands = {
@@ -59,29 +61,13 @@ AirTransport = ClassUnit(AirUnit, BaseTransport) {
             if UnloadCommands[command.commandType] then
                 local navigator = self:GetNavigator()
                 local targetPos = navigator:GetCurrentTargetPos()
-                local posX, posY, posZ = self:GetPositionXYZ()
+                local pos = self:GetPosition()
 
-                if not targetPos then
-                    return
-                end
-
+                if not targetPos then return end
                 -- Don't drop if we're too far away from the target
-
-                local commandDistX = command.x - posX
-                local commandDistZ = command.z - posZ
-
-                if MathSqrt(commandDistX * commandDistX + commandDistZ * commandDistZ) > 20 then
-                    return
-                end
-
-                local targetDistX = targetPos[1] - posX
-                local targetDistZ = targetPos[3] - posZ
-
-                if MathSqrt(targetDistX * targetDistX + targetDistZ * targetDistZ) > HorzUnloadMargin
-                    or posY - targetPos[2] > (self.Blueprint.Air.TransportHoverHeight or 6) * VertUnloadFactor
-                then
-                    return
-                end
+                if XZDistanceTwoVectors(pos, command) > 20 then return end
+                if XZDistanceTwoVectors(pos, targetPos) > HorzUnloadMargin then return end
+                if pos[2] - targetPos[2] > (self.Blueprint.Air.TransportHoverHeight or 6) * VertUnloadFactor then return end
 
                 -- Tell our navigator to abort the move
                 -- this has the effect of causing the next unload command to be executed immediately
