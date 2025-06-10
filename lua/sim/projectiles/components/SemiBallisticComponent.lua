@@ -182,11 +182,7 @@ SemiBallisticComponent = ClassSimple {
     ---@param self SemiBallisticComponent | Projectile
     ---@return number
     HorizontalDistanceToTarget = function(self)
-        local tpos = self:GetCurrentTargetPosition()
-        local mpos = self:GetPosition()
-        local d1 = tpos[1] - mpos[1]
-        local d2 = tpos[3] - mpos[3]
-        return MathSqrt(d1 * d1 + d2 * d2)
+        return XZDistanceTwoVectors(self:GetPosition(), self:GetCurrentTargetPosition())
     end,
 
     -- Angle between the given vector and the horizontal plane
