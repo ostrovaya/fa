@@ -61,11 +61,13 @@ AirTransport = ClassUnit(AirUnit, BaseTransport) {
                 local targetPos = navigator:GetCurrentTargetPos()
                 local pos = self:GetPosition()
 
-                if not targetPos then return end
                 -- Don't drop if we're too far away from the target
-                if XZDistanceTwoVectors(pos, command) > 20 then return end
-                if XZDistanceTwoVectors(pos, targetPos) > HorzUnloadMargin then return end
-                if pos[2] - targetPos[2] > (self.Blueprint.Air.TransportHoverHeight or 6) * VertUnloadFactor then return end
+                if not targetPos or
+                    XZDistanceTwoVectors(pos, command) > 20 or
+                    XZDistanceTwoVectors(pos, targetPos) > HorzUnloadMargin or
+                    pos[2] - targetPos[2] > (self.Blueprint.Air.TransportHoverHeight or 6) * VertUnloadFactor then
+                    return
+                end
 
                 -- Tell our navigator to abort the move
                 -- this has the effect of causing the next unload command to be executed immediately
