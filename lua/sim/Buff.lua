@@ -5,6 +5,8 @@
 ----**  Copyright © 2008 Gas Powered Games, Inc.  All rights reserved.
 ----****************************************************************************
 
+local GetDifferenceVector = import("/lua/utilities.lua").GetDifferenceVector
+
 ---- The Unit's BuffTable for applied buffs looks like this:
 ----
 ---- Unit.Buffs = {
@@ -284,7 +286,7 @@ BuffEffects = {
                 Instigator = instigator,
                 Amount = -1 * healthadj,
                 Type = buffDefinition.DamageType or 'Spell',
-                Vector = VDiff(instigator:GetPosition(), unit:GetPosition())
+                Vector = GetDifferenceVector(instigator:GetPosition(), unit:GetPosition())
             }
             unit:DoTakeDamage(data)
         else
