@@ -20,8 +20,6 @@ local BaseTransportDestroyedOnTransport = BaseTransport.DestroyedOnTransport
 
 local XZDistanceTwoVectors = import("/lua/utilities.lua").XZDistanceTwoVectors
 
-local MathSqrt = math.sqrt
-
 local UnloadCommands = {
     [24] = true, -- TransportUnloadUnits
     [25] = true, -- TransportUnloadSpecificUnits
