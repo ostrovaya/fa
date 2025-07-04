@@ -193,6 +193,17 @@ CArtilleryProtonProjectile = ClassProjectile(SinglePolyTrailProjectile) {
     end,
 }
 
+---  CYBRAN EXPERIMENTAL ARTILLERY PROJECILES
+-- -@class CArtilleryProtonAcceleratorProjectile : SinglePolyTrailProjectile
+-- CArtilleryProtonAcceleratorProjectile = ClassProjectile(SinglePolyTrailProjectile) {
+    
+--     FxImpactTrajectoryAligned = false,
+--     PolyTrail = '/effects/emitters/default_polytrail_01_emit.bp',
+--     FxImpactUnit = EffectTemplate.CProtonArtilleryHit01,
+--     FxImpactProp = EffectTemplate.CProtonArtilleryHit01,
+--     FxImpactLand = EffectTemplate.CProtonArtilleryHit01,
+-- }
+
 ---  CYBRAN BEAM PROJECILES
 ---@class CBeamProjectile : NullShell
 CBeamProjectile = ClassProjectile(NullShell) {
